@@ -4,6 +4,7 @@ var queryUrl = baseUrl + '/query';
 
 var username = "ois.seminar";
 var password = "ois4fri";
+var imena =[/*"9df2f984-57d0-48a6-ab9b-ba791462b351"*/"26bc67dd-88d4-4f2f-8a57-10328b3abfd3", "a28c3421-d0fe-47ab-bd72-b52ad3f22316", "49b8e430-bc67-404b-8a17-7551d4f86505"];
 
 
 /**
@@ -71,6 +72,7 @@ function kreirajUporabnikID() {
 		    }
 		});
 	}
+	//window.location.reload();
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -163,6 +165,8 @@ function dodajMeritve() {
 	
 	if (bmi > 25) {
 		alaremPomoc();
+		$("#alarmantniUspeh").html(
+            "<span class='obvestilo label label-danger fade-in'>Vaša telesna masa je presegla priporočljive vrednosti! Pomagajte si z zemljevidom spodaj. ");
               
 	}
 	
@@ -173,8 +177,13 @@ function dodajMeritve() {
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function analizaPodatkov() {
+	
 	sessionId = getSessionId();
-
+	
+	/*setTimeout(function () {
+		window.location.reload();
+	}, 5000);*/
+    
 	var ehrId = $("#meritveVitalnihZnakovEHRid").val();
 	var tip = $("#preberiTipZaIzpisPodatkov").val();
 
@@ -182,6 +191,7 @@ function analizaPodatkov() {
 		$("#preberiMeritveVitalnihZnakovSporocilo").html("<span class='obvestilo " +
       "label label-warning fade-in'>Prosim vnesite zahtevan podatek!");
 	} else {
+		
 		var a = izrisiPolje();
 		$.ajax({
 			url: baseUrl + "/demographics/ehr/" + ehrId + "/party",
@@ -472,6 +482,7 @@ function analizaPodatkov() {
 	    	}
 		});
 	}
+	
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -533,7 +544,6 @@ function duckyGo() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function narisiGraf(rezultati, datumi) {
-	
 	google.charts.load('current', {'packages':['corechart']});
 						        console.log("nalaganje chart");
 							      google.charts.setOnLoadCallback(drawChart);
@@ -593,8 +603,10 @@ function vlkGraf(ITM, datumi, trajanjeAktivnosti, pijancevanje) {
 }
 
 function izrisiPolje() {
-	
-		$("#grafiti").html('<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script><div id="chart_div" style="width: 900px; height: 500px;"></div>');
+		
+		var w = window.innerWidth;
+		w = w/2 - 100;
+		$("#grafiti").html('<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script><div id="chart_div" style="width: '+w+'px; height: 500px;"></div>');
 	
 }
 
@@ -606,13 +618,124 @@ function izrisiPolje() {
  * @param stPacienta zaporedna številka pacienta (1, 2 ali 3)
  * @return ehrId generiranega pacienta
  */
-function generirajPodatke(stPacienta) {
-  ehrId = "";
-
-  // TODO: Potrebno implementirati
-
-  return ehrId;
+ 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function generirajPodatke() {
+  console.log("začetek generiranja");
+  for(var i = 0; i < 3; i++) {
+  	ustvariOsebo(i);
+  	
+  }
 }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function ustvariOsebo(stevilka) {
+	var ehrIdentifikacija = "";
+	sessionId = getSessionId();
+	var ehrId = ""
+	var ime = "Pacient_ime_z_številko_"+stevilka;
+	var priimek = "Pacient_priimek_z_številko_"+stevilka;
+	var datumRojstva = "19"+Math.floor((Math.random() * 100)) +"-"+Math.floor((Math.random() * 12)+1)+"-"+Math.floor((Math.random() * 28)+1)+"T"+Math.floor((Math.random() * 24))+":"+Math.floor((Math.random() * 60));
+	
+		$.ajaxSetup({
+		    headers: {"Ehr-Session": sessionId}
+		});
+		$.ajax({
+		    url: baseUrl + "/ehr",
+		    type: 'POST',
+		    success: function (data) {
+		        	ehrId = data.ehrId;
+		        var partyData = {
+		            firstNames: ime,
+		            lastNames: priimek,
+		            dateOfBirth: datumRojstva,
+		            partyAdditionalInfo: [{key: "ehrId", value: ehrId}]
+		        };
+		        $.ajax({
+		            url: baseUrl + "/demographics/party",
+		            type: 'POST',
+		            contentType: 'application/json',
+		            data: JSON.stringify(partyData),
+		            success: function (party) {
+		                if (party.action == 'CREATE') {
+		                    imena[stevilka] = ehrId;
+							console.log("kreiran je bil pacient z EHR id = "+ehrId);
+		                }
+		            },
+		            error: function(err) {
+		            	$("#kreirajSporocilo").html("<span class='obvestilo label " +
+                    "label-danger fade-in'>Napaka '" +
+                    JSON.parse(err.responseText).userMessage + "'!");
+		            }
+		        });
+		    }
+		});
+		
+}
+	///////////////////////////
+function podatkovnica() {
+for (var pac = 0; pac < 3; pac++) {
+	
+	for (var i = 0; i < 7; i ++) {
+	sessionId = getSessionId();
+	var ehridus = imena[pac];
+	var datumInUra = "2016" +"-07"+"-"+Math.floor((Math.random() * 28)+1)+"T"+Math.floor((Math.random() * 24))+":"+ (Math.floor((Math.random() * 60)))+"Z";
+	console.log(datumInUra);
+	var telesnaVisina = (1.70+(Math.random() * 0.21));
+	console.log(telesnaVisina);
+	var telesnaTeza = 60+Math.floor((Math.random() * 15));
+	console.log(telesnaTeza);
+	var trajanjeTelovadbe = 30+Math.floor((Math.random() * 91));//var sistolicniKrvniTlak = $("#dodajVitalnoKrvniTlakSistolicni").val();
+	console.log(trajanjeTelovadbe);
+	var zauzitaVoda = 1+(Math.floor((Math.random() * 5))/2);//var diastolicniKrvniTlak = $("#dodajVitalnoKrvniTlakDiastolicni").val();
+	console.log(zauzitaVoda);
+	var merilec = "uporabnik";
+	console.log("uspeh vnosa");
+	
+		$.ajaxSetup({
+		    headers: {"Ehr-Session": sessionId}
+		});
+		var podatki = {
+			// Struktura predloge je na voljo na naslednjem spletnem naslovu:
+      // https://rest.ehrscape.com/rest/v1/template/Vital%20Signs/example
+		    "ctx/language": "en",
+		    "ctx/territory": "SI",
+		    "ctx/time": datumInUra,
+		    "vital_signs/height_length/any_event/body_height_length": telesnaVisina,
+		    "vital_signs/body_weight/any_event/body_weight": telesnaTeza,
+		    "vital_signs/blood_pressure/any_event/systolic": trajanjeTelovadbe,
+		    "vital_signs/blood_pressure/any_event/diastolic": zauzitaVoda,
+		};
+		var parametriZahteve = {
+		    ehrId: ehridus,
+		    templateId: 'Vital Signs',
+		    format: 'FLAT',
+		    committer: merilec
+		};
+		console.log("začetek zapisa");
+		$.ajax({
+		    url: baseUrl + "/composition?" + $.param(parametriZahteve),
+		    type: 'POST',
+		    contentType: 'application/json',
+		    data: JSON.stringify(podatki),
+		    success: function (res) {
+		        console.log(pac+" ima opravljeno "+i+" meritev");
+		    },
+		    error: function(err) {
+		    	$("#dodajMeritveSporocilo").html(
+            "<span class='obvestilo label label-danger fade-in'>Napaka '" +
+            JSON.parse(err.responseText).userMessage + "'!");
+		    }
+		});
+	
+	}
+	
+}
+}
+	////////////////////////////
+	//window.location.reload();
+	
+////////////////////////////
+
 
 
 // TODO: Tukaj implementirate funkcionalnost, ki jo podpira vaša aplikacija

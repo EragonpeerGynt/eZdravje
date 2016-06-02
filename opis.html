@@ -45,7 +45,7 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Opis ideje, ki jo aplikacija podpira -->
-            <p><strong>TO-DO</strong>: Na tem mestu je potrebno dodati <strong>osnovni opis ideje rešitve</strong> (kakšen je osnovni SCENARIJ UPORABE, KDO je ciljna publika, za kakšen NAMEN se aplikacija uporablja).</p><p class="text-muted">Opis naj ne bo daljši od 200 besed.</p>
+            <p>Spletna stran je namenjena samo nadzoru in pomoči pri izgubi telesne teže. Ciljna publika so ljudje, ki želijo izgubiti težo ali pa le nadzorovati dnevno aktivnost. Aplikacija v primeri previsoke teže uporabniku poišče in na zemljevidu pikaže najbližje/najbolje ocenjeno aktivnost (fitnesi), ki ga lahko uporabimo tudi samis klikom na gumb "Pomagaj mi". Poleg tega nudi uporabniku tudi grafičen prikaz razmerja med njihovo aktivnostjo in indeksom telesne teže.</p>
             <!-- KONEC: Opis ideje, ki jo aplikacija podpira -->
           </div>
         </div>
@@ -55,7 +55,11 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Uporabljeni zunanji viri podatkov -->
-            <p><strong>TO-DO</strong>: Na tem mestu je navesti zunanji vir podatkov (URL naslov), na kakšen način ste ga uporabili (neposredni API klic, uvožena statična datoteka ipd.) in kaj je bil namen uporabe (kako se vključuje v osnovno idejo aplikacije).</p>
+            <p>Uprabljen(i) API je (so):</p>
+            <p>Googlov API za zemljevide (uporabljena kombinacija API za html in javascript API) Do API se dostopa preko skripte na Googlov API strežnik. Ta se uporablja za to,da v okolici uporabnika najdemo najbolje ocenjen in najbližji fitness.</p>
+            <p>https://developers.google.com/maps/web/?hl=sl</p>
+            <p>Googlov API za risanje grafov. Skripta je na strežniku googla. API se uporablja za to, da izrišem 3 različne grafe, ki prikažejo spreminjane teže, drugi koliko so aktivni uporabniki in tretji odvisnost med indeksom telesne mase, aktivnostjo in količino spite vode.</p>
+            <p>https://developers.google.com/chart/</p>
             <!-- KONEC: Uporabljeni zunanji viri podatkov -->
           </div>
         </div>
@@ -75,7 +79,7 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Uporabljeni zunanji viri podatkov -->
-            <p><strong>TO-DO</strong>: Na tem mestu je potrebno navesti uporabljeno tehniko vizualizacije podatkov (za pomoč lahko uporabite primer iz <a href="https://github.com/mbostock/d3/wiki/Gallery" target="_blank">D3.js galerije</a>) in zakaj je bila ta tehnika izbrana.</p>
+            <p>Grafična prestavitev je bila narejena s pomočjo Google developer Charts API, ker sem ga uporabljal že v preteklosti in je uporaba relativno preprosta. Grafi ravno tako omogočijo dobro preglednost inizbiranje posamičnih točk za bolj natančno odčitovanje. Za predstavitev je bil izbran "tekoči" stolpični diagram, sam lahko na njem predstaviš več podatkov naenkrat brez da bi se vrednosti prekrivale.</p>
             <!-- KONEC: Uporabljeni zunanji viri podatkov -->
           </div>
         </div>
