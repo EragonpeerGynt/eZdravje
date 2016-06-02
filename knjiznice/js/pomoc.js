@@ -118,7 +118,7 @@ function dodajMeritve() {
 	var merilec = "uporabnik";
 
 	if (!ehrId || ehrId.trim().length == 0) {
-		$("#dodajMeritveVitalnihZnakovSporocilo").html("<span class='obvestilo " +
+		$("#dodajMeritveSporocilo").html("<span class='obvestilo " +
       "label label-warning fade-in'>Prosim vnesite zahtevane podatke!</span>");
 	} else {
 		$.ajaxSetup({
@@ -147,19 +147,332 @@ function dodajMeritve() {
 		    contentType: 'application/json',
 		    data: JSON.stringify(podatki),
 		    success: function (res) {
-		        $("#dodajMeritveVitalnihZnakovSporocilo").html(
+		        $("#dodajMeritveSporocilo").html(
               "<span class='obvestilo label label-success fade-in'>" +
               res.meta.href + ".</span>");
 		    },
 		    error: function(err) {
-		    	$("#dodajMeritveVitalnihZnakovSporocilo").html(
+		    	$("#dodajMeritveSporocilo").html(
             "<span class='obvestilo label label-danger fade-in'>Napaka '" +
             JSON.parse(err.responseText).userMessage + "'!");
 		    }
 		});
 	}
+	var bmi = telesnaVisina*telesnaVisina;
+	bmi = telesnaTeza/bmi;
+	
+	if (bmi > 25) {
+		alaremPomoc();
+              
+	}
+	
+	
 }
 
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function analizaPodatkov() {
+	sessionId = getSessionId();
+
+	var ehrId = $("#meritveVitalnihZnakovEHRid").val();
+	var tip = $("#preberiTipZaIzpisPodatkov").val();
+
+	if (!ehrId || ehrId.trim().length == 0 || !tip || tip.trim().length == 0) {
+		$("#preberiMeritveVitalnihZnakovSporocilo").html("<span class='obvestilo " +
+      "label label-warning fade-in'>Prosim vnesite zahtevan podatek!");
+	} else {
+		var a = izrisiPolje();
+		$.ajax({
+			url: baseUrl + "/demographics/ehr/" + ehrId + "/party",
+	    	type: 'GET',
+	    	headers: {"Ehr-Session": sessionId},
+	    	success: function (data) {
+				var party = data.party;
+				$("#meritveRezultati").html("<br/><span>Pridobivanje " +
+          "podatkov za <b>'" + tip + "'</b> bolnika <b>'" + party.firstNames +
+          " " + party.lastNames + "'</b>.</span><br/><br/>");
+				if (tip == "Teza") {
+					
+					$.ajax({
+  					    url: baseUrl + "/view/" + ehrId + "/" + "weight",
+					    type: 'GET',
+					    headers: {"Ehr-Session": sessionId},
+					    success: function (res) {
+					    	if (res.length > 0) {
+					    		var dolzina = 7;
+					    		if(res.length < 7) {
+					    			dolzina = res.length;
+					    		}
+					    		
+					    		
+					    		
+					    		var rezultati = [];
+					    		var datumi = [];
+						    	
+						        for (var i = 0; i < dolzina; i++) {
+						            
+                          		var temp = res[i].time.split(/T/);
+                          		datumi[7 - i - 1] = temp[0];
+                          		rezultati[7 - i - 1] = res[i].weight;
+						        }
+						        narisiGraf(rezultati, datumi);
+						        /*google.charts.load('current', {'packages':['corechart']});
+						        console.log("nalaganje chart");
+							      google.charts.setOnLoadCallback(drawChart);
+							      function drawChart() {
+							        var data = google.visualization.arrayToDataTable([
+							          ['Datum', 'Teža'],
+							          [datumi[0],  rezultati[0]],
+							          [datumi[1],  rezultati[1]],
+							          [datumi[2],  rezultati[2]],
+							          [datumi[3],  rezultati[3]],
+							          [datumi[4],  rezultati[4]],
+							          [datumi[5],  rezultati[5]],
+							          [datumi[6],  rezultati[6]]
+							        ]);
+							
+							        var options = {
+							          title: 'Teža',
+							          hAxis: {title: 'Datum',  titleTextStyle: {color: '#333'}},
+							          vAxis: {minValue: 0}
+							        };
+							
+							        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+							        chart.draw(data, options);
+      								}
+      								console.log("vse je nareto pametnjakovič");*/
+      								
+					    	} else {
+					    		$("#meritveRezultati").html(
+                    "<span class='obvestilo label label-warning fade-in'>" +
+                    "Ni podatkov!</span>");
+					    	}
+					    },
+					    error: function() {
+					    	$("#meritveRezultati").html(
+                  "<span class='obvestilo label label-danger fade-in'>Napaka '" +
+                  JSON.parse(err.responseText).userMessage + "'!");
+					    }
+					});
+				} else if (tip == "Aktivnost") {
+					$.ajax({
+					    url: baseUrl + "/view/" + ehrId + "/" + "blood_pressure",
+					    type: 'GET',
+					    headers: {"Ehr-Session": sessionId},
+					    success: function (res) {
+					    	if (res.length > 0) {
+					    		var dolzina = 7;
+					    		if (res.length < 7) {
+					    			dolzina = res.length
+					    		}
+					    		
+					    		
+						    	
+                    			var rezultati = [];
+					    		var datumi = [];
+                    			
+						        for (var i = 0; i < dolzina; i++) {
+						            
+                          		var temp = res[i].time.split(/T/);
+                          		datumi[7 - i - 1] = temp[0];
+                          		rezultati[7 - i - 1] = res[i].systolic;
+						        }
+						        narisiGraf(rezultati, datumi);
+						        /*google.charts.load('current', {'packages':['corechart']});
+						        console.log("nalaganje chart");
+							      google.charts.setOnLoadCallback(drawChart);
+							      function drawChart() {
+							        var data = google.visualization.arrayToDataTable([
+							          ['Datum', 'Trajanje aktivnosti [min]'],
+							          [datumi[0],  rezultati[0]],
+							          [datumi[1],  rezultati[1]],
+							          [datumi[2],  rezultati[2]],
+							          [datumi[3],  rezultati[3]],
+							          [datumi[4],  rezultati[4]],
+							          [datumi[5],  rezultati[5]],
+							          [datumi[6],  rezultati[6]]
+							        ]);
+							
+							        var options = {
+							          title: 'Trajanje aktivnosti',
+							          hAxis: {title: 'Datum',  titleTextStyle: {color: '#333'}},
+							          vAxis: {minValue: 0}
+							        };
+							
+							        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+							        chart.draw(data, options);
+      								}
+      								console.log("vse je nareto pametnjakovič");*/
+						        
+					    	} else {
+					    		$("#meritveRezultati").html(
+                    "<span class='obvestilo label label-warning fade-in'>" +
+                    "Ni podatkov!</span>");
+					    	}
+					    },
+					    error: function() {
+					    	$("#meritveRezultati").html(
+                  "<span class='obvestilo label label-danger fade-in'>Napaka '" +
+                  JSON.parse(err.responseText).userMessage + "'!");
+					    }
+					});
+				}
+				////////////////////////////////////////////////////////////
+				else if (tip == "ITM z dolzino aktivnosti in zauzito vodo") {
+					var nadaljuj = true;
+					var ITM = [];
+					var trajanjeAktivnosti = [];
+					var pijancevanje = [];
+					var datumi = [];
+					$.ajax({
+  					    url: baseUrl + "/view/" + ehrId + "/" + "weight",
+					    type: 'GET',
+					    headers: {"Ehr-Session": sessionId},
+					    success: function (res) {
+					    	if (res.length > 0) {
+					    		var dolzina = 7;
+					    		if(res.length < 7) {
+					    			dolzina = res.length;
+					    		}
+						    	
+						        for (var i = 0; i < dolzina; i++) {
+						            
+                          		var temp = res[i].time.split(/T/);
+                          		datumi[7 - i - 1] = temp[0];
+                          		ITM[7 - i - 1] = res[i].weight;
+						        }
+						        
+						        
+      								
+					    	} else {
+					    		$("#meritveRezultati").html(
+                    "<span class='obvestilo label label-warning fade-in'>" +
+                    "Ni podatkov!</span>");
+                    		nadaljuj = false;
+					    	}
+					    },
+					    error: function() {
+					    	$("#meritveRezultati").html(
+                  "<span class='obvestilo label label-danger fade-in'>Napaka '" +
+                  JSON.parse(err.responseText).userMessage + "'!");
+                  		nadaljuj = false;
+					    }
+					});
+					if (nadaljuj) {
+						$.ajax({
+	  					    url: baseUrl + "/view/" + ehrId + "/" + "height",
+						    type: 'GET',
+						    headers: {"Ehr-Session": sessionId},
+						    success: function (res) {
+						    	if (res.length > 0) {
+						    		var dolzina = 7;
+						    		if(res.length < 7) {
+						    			dolzina = res.length;
+						    		}
+							    	
+							        for (var i = 0; i < dolzina; i++) {
+							        var temp =   res[i].height;
+							        temp = temp * temp;
+							        temp = ITM[7 - i - 1]/temp;
+	                          		ITM[7 - i - 1] = temp;
+	                          		
+							        }
+							        
+							        
+	      								
+						    	} else {
+						    		$("#meritveRezultati").html(
+	                    "<span class='obvestilo label label-warning fade-in'>" +
+	                    "Ni podatkov!</span>");
+	                    nadaljuj = false;
+						    	}
+						    },
+						    error: function() {
+						    	$("#meritveRezultati").html(
+	                  "<span class='obvestilo label label-danger fade-in'>Napaka '" +
+	                  JSON.parse(err.responseText).userMessage + "'!");
+	                  nadaljuj = false;
+						    }
+						});
+						
+						if (nadaljuj) {
+							$.ajax({
+		  					    url: baseUrl + "/view/" + ehrId + "/" + "blood_pressure",
+							    type: 'GET',
+							    headers: {"Ehr-Session": sessionId},
+							    success: function (res) {
+							    	if (res.length > 0) {
+							    		var dolzina = 7;
+							    		if(res.length < 7) {
+							    			dolzina = res.length;
+							    		}
+							    		
+							    		
+								    	
+								        for (var i = 0; i < dolzina; i++) {
+								            
+		                          		trajanjeAktivnosti[7 - i - 1] = res[i].systolic;
+		                          		pijancevanje[7 - i - 1] = res[i].diastolic;
+		                          		
+								        }
+								        
+								        vlkGraf(ITM, datumi, trajanjeAktivnosti, pijancevanje);
+								        /*google.charts.load('current', {'packages':['corechart']});
+								        console.log("nalaganje chart");
+									      google.charts.setOnLoadCallback(drawChart);
+									      console.log("nalaganje chart2");
+									      function drawChart() {
+									        var data = google.visualization.arrayToDataTable([
+									          ['Datum', 'Indeks Telesne Mase', 'Trajanje aktivnosti', 'Količina zaužite vode'],
+									          [datumi[0],  ITM[0], trajanjeAktivnosti[0], pijancevanje[0]],
+									          [datumi[1],  ITM[1], trajanjeAktivnosti[1], pijancevanje[1]],
+									          [datumi[2],  ITM[2], trajanjeAktivnosti[2], pijancevanje[2]],
+									          [datumi[3],  ITM[3], trajanjeAktivnosti[3], pijancevanje[3]],
+									          [datumi[4],  ITM[4], trajanjeAktivnosti[4], pijancevanje[4]],
+									          [datumi[5],  ITM[5], trajanjeAktivnosti[5], pijancevanje[5]],
+									          [datumi[6],  ITM[6], trajanjeAktivnosti[6], pijancevanje[6]]
+									        ]);
+									
+									        var options = {
+									          title: 'Trajanje aktivnosti',
+									          hAxis: {title: 'Datum',  titleTextStyle: {color: '#333'}},
+									          vAxis: {minValue: 0}
+									        };
+									
+									        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+									        chart.draw(data, options);
+		      								}
+		      								console.log("vse je nareto pametnjakovič");*/
+		      								
+							    	} else {
+							    		$("#meritveRezultati").html(
+		                    "<span class='obvestilo label label-warning fade-in'>" +
+		                    "Ni podatkov!</span>");
+		                    nadaljuj = false;
+							    	}
+							    },
+							    error: function() {
+							    	$("#meritveRezultati").html(
+		                  "<span class='obvestilo label label-danger fade-in'>Napaka '" +
+		                  JSON.parse(err.responseText).userMessage + "'!");
+		                  nadaljuj = false;
+						    }
+						});
+				
+					}
+				
+					}	
+				}
+	    	},
+	    	error: function(err) {
+	    		$("#preberiMeritveVitalnihZnakovSporocilo").html(
+            "<span class='obvestilo label label-danger fade-in'>Napaka '" +
+            JSON.parse(err.responseText).userMessage + "'!");
+	    	}
+		});
+	}
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -190,10 +503,100 @@ $(document).ready(function() {
 		$("#dodajMinAktivnosti").val(podatki[4]);
 		$("#dodajVoda").val(podatki[5]);
 	});
+	
+	$('#preberiEhrIdZaVitalneZnake').change(function() {
+		$("#preberiMeritveVitalnihZnakovSporocilo").html("");
+		$("#rezultatMeritveVitalnihZnakov").html("");
+		$("#meritveVitalnihZnakovEHRid").val($(this).val());
+	});
   
 });
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function alaremPomoc() {
+	
+	console.log("debeluh se meri");
+	duckyGo();
+	
+	
+}
+
+function duckyGo() {
+	
+		var w = window.innerWidth;
+		w = w/2 - 100;
+	
+		$("#zemljevid").html('<iframe width="'+w+'" height="'+w/4*3+'" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyC83FUj1XIsyHQh5QudwsPT0wUrtY9T8VA &q=fitness" allowfullscreen> </iframe>');
+	
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function narisiGraf(rezultati, datumi) {
+	
+	google.charts.load('current', {'packages':['corechart']});
+						        console.log("nalaganje chart");
+							      google.charts.setOnLoadCallback(drawChart);
+							      function drawChart() {
+							        var data = google.visualization.arrayToDataTable([
+							          ['Datum', 'Teža'],
+							          [datumi[0],  rezultati[0]],
+							          [datumi[1],  rezultati[1]],
+							          [datumi[2],  rezultati[2]],
+							          [datumi[3],  rezultati[3]],
+							          [datumi[4],  rezultati[4]],
+							          [datumi[5],  rezultati[5]],
+							          [datumi[6],  rezultati[6]]
+							        ]);
+							
+							        var options = {
+							          title: 'Teža',
+							          hAxis: {title: 'Datum',  titleTextStyle: {color: '#333'}},
+							          vAxis: {minValue: 0}
+							        };
+							
+							        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+							        chart.draw(data, options);
+      								}
+      								console.log("vse je nareto pametnjakovič");
+	
+}
+
+function vlkGraf(ITM, datumi, trajanjeAktivnosti, pijancevanje) {
+	
+	google.charts.load('current', {'packages':['corechart']});
+								        console.log("nalaganje chart");
+									      google.charts.setOnLoadCallback(drawChart);
+									      function drawChart() {
+									        var data = google.visualization.arrayToDataTable([
+									          ['Datum', 'Indeks Telesne Mase', 'Trajanje aktivnosti', 'Količina zaužite vode'],
+									          [datumi[0],  ITM[0], trajanjeAktivnosti[0], pijancevanje[0]],
+									          [datumi[1],  ITM[1], trajanjeAktivnosti[1], pijancevanje[1]],
+									          [datumi[2],  ITM[2], trajanjeAktivnosti[2], pijancevanje[2]],
+									          [datumi[3],  ITM[3], trajanjeAktivnosti[3], pijancevanje[3]],
+									          [datumi[4],  ITM[4], trajanjeAktivnosti[4], pijancevanje[4]],
+									          [datumi[5],  ITM[5], trajanjeAktivnosti[5], pijancevanje[5]],
+									          [datumi[6],  ITM[6], trajanjeAktivnosti[6], pijancevanje[6]]
+									        ]);
+									
+									        var options = {
+									          title: 'Trajanje aktivnosti',
+									          hAxis: {title: 'Datum',  titleTextStyle: {color: '#333'}},
+									          vAxis: {minValue: 0}
+									        };
+									
+									        var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+									        chart.draw(data, options);
+		      								}
+		      								console.log("vse je nareto pametnjakovič");
+	
+}
+
+function izrisiPolje() {
+	
+		$("#grafiti").html('<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script><div id="chart_div" style="width: 900px; height: 500px;"></div>');
+	
+}
 
 /**
  * Generator podatkov za novega pacienta, ki bo uporabljal aplikacijo. Pri

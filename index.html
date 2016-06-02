@@ -83,30 +83,67 @@
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-lg-8 col-md-8 col-sm-8"><b>Vnos</b> dnevne aktivnosti</div>
-							<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiObstojeciVitalniZnak"><option value=""></option><option value="b931580f-2b05-488b-985b-8d9ffb08ad02|2016-05-21T19:05Z|185|80.0|68|1.5">Ata Smrk</option></select></div>
+							<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiObstojeciVitalniZnak"><option value=""></option><option value="b931580f-2b05-488b-985b-8d9ffb08ad02|2016-05-21T19:05Z|1.85|80.0|68|1.5">Ata Smrk</option></select></div>
 						</div>
 					</div>
 					<div class="panel-body">
 						<span class="label label-default">EHR ID</span><input id="dodajAktivnostEhrID" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
 						<span class="label label-default">Datum in ura</span><input id="zabeleziUro" type="text" class="form-control input-mini" placeholder="2015-11-21T11:40Z">
-						<span class="label label-default">Telesna višina</span><div class="input-group"><input id="dodajVisina" type="text" class="form-control input-mini" placeholder="185"><span class="input-group-addon">cm</span></div>
+						<span class="label label-default">Telesna višina</span><div class="input-group"><input id="dodajVisina" type="text" class="form-control input-mini" placeholder="1.85"><span class="input-group-addon">m</span></div>
 						<span class="label label-default">Telesna teža</span><div class="input-group"><input id="dodajTeza" type="text" class="form-control input-mini" placeholder="80.00"><span class="input-group-addon">kg</span></div>
 						<span class="label label-default">Trajanje telesne aktivnosti (minute)</span><div class="input-group"><input id="dodajMinAktivnosti" type="text" class="form-control input-mini" placeholder="60"><span class="input-group-addon">min</span></div>
 						<span class="label label-default">Količina zaužite vode</span><div class="input-group"><input id="dodajVoda" type="text" class="form-control input-mini" placeholder="2.3"><span class="input-group-addon">L</span></div>
-						<button type="button" class="btn btn-primary btn-xs" onclick="dodajMeritve()">Dodaj meritve vitalnih znakov</button><span id="dodajMeritveVitalnihZnakovSporocilo"></span>
+						<button type="button" class="btn btn-primary btn-xs" onclick="dodajMeritve()">Dodaj meritve vitalnih znakov</button><span id="dodajMeritveSporocilo"></span>
+				  	</div>
+				</div>
+			</div>
+			
+		<!--__________________________________________________________________________________________________________________________________-->
+		<div class="col-lg-6 col-md-6 col-sm-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6"><b>Pregled</b> zadnjih 7 vnosov</div>
+							<div class="col-lg-3 col-md-3 col-sm-3"><select class="form-control input-sm" id="preberiTipZaIzpisPodatkov"><option value="Teza">Teža</option><option value="Aktivnost">Aktivnost</option><option value="ITM z dolzino aktivnosti in zauzito vodo">ITM z dolžino aktivnosti in zaužito vodo</option></select></div>
+							<div class="col-lg-3 col-md-3 col-sm-3"><select class="form-control input-sm" id="preberiEhrIdZaVitalneZnake"><option value=""></option><option value="b931580f-2b05-488b-985b-8d9ffb08ad02">Ata Smrk</option><option value="d564c6a3-5a43-4fcc-bfa7-9ac76e9673bd">Pujsa Pepa</option></select></div>
+						</div>
+					</div>
+					<div class="panel-body">
+						<span class="label label-default">EHR ID</span><input id="meritveVitalnihZnakovEHRid" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
+						<button type="button" class="btn btn-primary btn-xs" onclick="analizaPodatkov()">Izriši grafe</button><span id="preberiMeritveVitalnihZnakovSporocilo"></span>
+						<div id="meritveRezultati"></div>
+						<div id="grafiti"></div>
+				  	</div>
+				</div>
+			</div>
+		<!--__________________________________________________________________________________________________________________________________-->
+		
+		
+		<div class="col-lg-6 col-md-6 col-sm-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6" id="alarmantniUspeh"><b>Pomoč</b> z "spleta"</div>
+							
+						</div>
+					</div>
+					<div class="panel-body">
+						<!--<iframe
+					  width="600"
+					  height="450"
+					  frameborder="0" style="border:0"
+					  src="https://www.google.com/maps/embed/v1/place?key=AIzaSyC83FUj1XIsyHQh5QudwsPT0wUrtY9T8VA
+					  &q=fitness" allowfullscreen>
+						</iframe>-->
+						<div id="zemljevid">
+						<button type="button" class="btn btn-primary btn-xs" onclick="duckyGo()">Pomagaj mi</button><span id="Pomagaj_mi"></span>
+						<div id="brskanjePoNetu"></div>
+						</div>
 				  	</div>
 				</div>
 			</div>
 
-  <!-- ZAČETEK: Vsebina aplikacije -->
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-12 text-center">
-        <p class="lead"><strong>TO-DO</strong>: Na tem mestu implementirajte vašo aplikacijo.</p>
-      </div>
-    </div>
-  </div>
-  <!-- KONEC: Vsebina aplikacije -->
+
 
 </body>
 </html>
