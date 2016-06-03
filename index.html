@@ -9,9 +9,13 @@
 			body {padding-left: 10px;}
 			body {padding-right: 10px;}
 		</style>
+	<!--Quite nosey aren't you?
+	Don't try to see thing that you aren't supposed to see.
+	You might find something, that you won't like-->
   <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
   <script src="knjiznice/js/bootstrap.min.js"></script>
   <script src="knjiznice/js/pomoc.js"></script>
+  <script src="knjiznice/js/easter_egg.js"></script>
 </head>
 <body>
 
@@ -49,13 +53,13 @@
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-lg-8 col-md-8 col-sm-8"><b>Registracija</b> novega uporabnika</div>
-							<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiPredlogoBolnika"><option value=""></option><option value="Nik,Pečjak,1978-12-23T43:21">Nik Pečjak</option></select></div>
+							<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiPredlogoBolnika"><option value=""></option><option value="Nik,Pečjak,1978-12-23T13:21">Nik Pečjak</option></select></div>
 						</div>
 					</div>
 					<div class="panel-body">
-						<span class="label label-default">Ime</span><input id="trenutnoIme" type="text" class="form-control input-mini" placeholder="Osama">
-						<span class="label label-default">Priimek</span><input id="trenutniPriimek" type="text" class="form-control" placeholder="Bin Laden">
-						<span class="label label-default">Datum rojstva</span><input id="datumRojstva" type="text" class="form-control" placeholder="1957-03-10T09:08">
+						<span class="label label-default">Ime</span><input id="trenutnoIme" type="text" class="form-control input-mini" placeholder="Gaben">
+						<span class="label label-default">Priimek</span><input id="trenutniPriimek" type="text" class="form-control" placeholder="Newell">
+						<span class="label label-default">Datum rojstva</span><input id="datumRojstva" type="text" class="form-control" placeholder="1977-03-10T09:08">
 						<button type="button" class="btn btn-primary btn-xs" onclick="kreirajUporabnikID()">Registracija</button><span id="kreirajSporocilo"></span>
 				  	</div>
 				</div>
@@ -70,7 +74,7 @@
 					</div>
 					<div class="panel-body">
 						<span class="label label-default">EHR ID</span><input id="preberiUporabnika" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
-						<button type="button" class="btn btn-primary btn-xs" onclick="preglejUporabnika()">Preberi osnovne podatke o bolniku</button><span id="preberiSporocilo"></span>
+						<div id="easterEgg"><button type="button" class="btn btn-primary btn-xs" onclick="preglejUporabnika()">Preberi osnovne podatke o bolniku</button><span id="preberiSporocilo"></span></div>
 				  	</div>
 				</div>
 			</div>

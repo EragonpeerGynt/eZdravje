@@ -72,6 +72,19 @@ function kreirajUporabnikID() {
 		    }
 		});
 	}
+	if (ime == "Gaben" && priimek == "Newell"){
+		
+		$("#easterEgg").html('<button type="button" class="btn btn-primary btn-xs" onclick="actionTurn()">Preberi osnovne podatke o bolniku</button><span id="preberiSporocilo"></span>');
+		console.log("Doom adventure has started.\nIf you want to continue type !start into field for checking person's info. If you want to go back to basic page enter !end")
+		
+	}
+	
+	if (ime == "Linus" && priimek == "Torvalds"){
+		
+		window.open("http://wallpaperus.org/wallpapers/05/189/linux-tux-1440x900-wallpaper-963933.jpg");
+		console.log("Penguin for the WIN!!!")
+	}
+	
 	//window.location.reload();
 }
 
@@ -81,7 +94,14 @@ function preglejUporabnika() {
 	sessionId = getSessionId();
 
 	var ehrId = $("#preberiUporabnika").val();
-
+	if (ehrId == "D20") {
+		
+		var roll = Math.floor((Math.random() * 20)+1);
+		console.log("DnD, roll out!");
+		document.querySelector('#preberiUporabnika').value = roll;
+		return;
+		
+	}
 	if (!ehrId || ehrId.trim().length == 0) {
 		$("#preberiSporocilo").html("<span class='obvestilo label label-warning " +
       "fade-in'>Prosim vnesite zahtevan podatek!");
