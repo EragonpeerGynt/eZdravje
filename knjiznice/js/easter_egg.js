@@ -20,7 +20,7 @@ function actionTurn() {
     else if (zaporedje[0] == "!start" && start == 1) {
         
         pomocnik();
-        console.log("You find yourself in hangar. All around you you can see dead bodies of your comrades.\nIt looks like something trore them appart.\nYou can see window on the right. Exits lead to north and east.");
+        console.log("You find yourself in hangar. All around you you can see dead bodies of your comrades.\nIt looks like something tore them appart.\nYou can see window on the east side of room. Exits lead to north and west.");
         start = 0;
         
     }
