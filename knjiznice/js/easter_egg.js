@@ -207,6 +207,6 @@ function winText() {
 
 function pomocnik() {
     
-    console.log("!help  pomoč za ukaze\n!stats  izpis življenskih točk\n!shoot <zombie/imp> ustreli izbranega sovražnika\nN    premakni se na sever\nnorth    premakni se na sever\nE    premakni se na vzhod\neast    premakni se na vzhod\nW    premakni se na zahod\nwest    premakni se na zahod\nS    premakni se na jug\nsouth    premakni se na jug");
+    console.log("!help  pomoč za ukaze\n!stats  izpis življenskih točk\nshoot <zombie/imp> ustreli izbranega sovražnika\nN    premakni se na sever\nnorth    premakni se na sever\nE    premakni se na vzhod\neast    premakni se na vzhod\nW    premakni se na zahod\nwest    premakni se na zahod\nS    premakni se na jug\nsouth    premakni se na jug");
     
 }
