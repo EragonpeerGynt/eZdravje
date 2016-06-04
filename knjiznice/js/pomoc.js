@@ -6,6 +6,8 @@ var username = "ois.seminar";
 var password = "ois4fri";
 var imena =[/*"9df2f984-57d0-48a6-ab9b-ba791462b351"*/"26bc67dd-88d4-4f2f-8a57-10328b3abfd3", "a28c3421-d0fe-47ab-bd72-b52ad3f22316", "49b8e430-bc67-404b-8a17-7551d4f86505"];
 
+var prviZagon = 1;
+
 
 /**
  * Prijava v sistem z privzetim uporabnikom za predmet OIS in pridobitev
@@ -507,7 +509,8 @@ function analizaPodatkov() {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-$(document).ready(function() {
+function aktivacija() {
+	
 
   //prepripravljeni uporabniki
   
@@ -521,7 +524,8 @@ $(document).ready(function() {
   
     $('#preberiObstojeciEHR').change(function() {
 		$("#preberiSporocilo").html("");
-		$("#preberiUporabnika").val($(this).val());
+		var podatki = $(this).val().split(",");
+		$("#preberiUporabnika").val(podatki[0]);
     });
     
     $('#preberiObstojeciVitalniZnak').change(function() {
@@ -540,6 +544,50 @@ $(document).ready(function() {
 		$("#rezultatMeritveVitalnihZnakov").html("");
 		$("#meritveVitalnihZnakovEHRid").val($(this).val());
 	});
+	
+}
+
+$(document).ready(function () {
+
+	/*console.log("Klic se je zgodil");
+  //prepripravljeni uporabniki
+  
+    $('#preberiPredlogoBolnika').change(function() {
+        $("#kreirajSporocilo").html("");
+        var podatki = $(this).val().split(",");
+        $("#trenutnoIme").val(podatki[0]);
+        $("#trenutniPriimek").val(podatki[1]);
+        $("#datumRojstva").val(podatki[2]);
+    });
+  
+    $('#preberiObstojeciEHR').change(function() {
+    	console.log("Gremo not");
+		$("#preberiSporocilo").html("");
+		console.log("Končan prvi korak");
+		var podatki = $(this).val().split(",");
+		console.log("Splitano");
+		$("#preberiUporabnika").val(podatki[0]);
+		console.log("Izpisano");
+    });
+    
+    $('#preberiObstojeciVitalniZnak').change(function() {
+		$("#dodajMeritveVitalnihZnakovSporocilo").html("");
+		var podatki = $(this).val().split("|");
+		$("#dodajAktivnostEhrID").val(podatki[0]);
+		$("#zabeleziUro").val(podatki[1]);
+		$("#dodajVisina").val(podatki[2]);
+		$("#dodajTeza").val(podatki[3]);
+		$("#dodajMinAktivnosti").val(podatki[4]);
+		$("#dodajVoda").val(podatki[5]);
+	});
+	
+	$('#preberiEhrIdZaVitalneZnake').change(function() {
+		$("#preberiMeritveVitalnihZnakovSporocilo").html("");
+		$("#rezultatMeritveVitalnihZnakov").html("");
+		$("#meritveVitalnihZnakovEHRid").val($(this).val());
+	});*/
+	
+	aktivacija();
   
 });
 
@@ -564,7 +612,9 @@ function duckyGo() {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function narisiGraf(rezultati, datumi) {
-	google.charts.load('current', {'packages':['corechart']});
+								if (prviZagon == 1) {
+									google.charts.load('current', {'packages':['corechart']});
+								}
 						        console.log("nalaganje chart");
 							      google.charts.setOnLoadCallback(drawChart);
 							      function drawChart() {
@@ -589,12 +639,14 @@ function narisiGraf(rezultati, datumi) {
 							        chart.draw(data, options);
       								}
       								console.log("vse je nareto pametnjakovič");
+      								prviZagon = 0;
 	
 }
 
 function vlkGraf(ITM, datumi, trajanjeAktivnosti, pijancevanje) {
-	
-	google.charts.load('current', {'packages':['corechart']});
+									if (prviZagon == 1) {
+										google.charts.load('current', {'packages':['corechart']});
+									}
 								        console.log("nalaganje chart");
 									      google.charts.setOnLoadCallback(drawChart);
 									      function drawChart() {
@@ -619,6 +671,7 @@ function vlkGraf(ITM, datumi, trajanjeAktivnosti, pijancevanje) {
 									        chart.draw(data, options);
 		      								}
 		      								console.log("vse je nareto pametnjakovič");
+		      								prviZagon = 0;
 	
 }
 
@@ -627,7 +680,7 @@ function izrisiPolje() {
 		var w = window.innerWidth;
 		w = w/2 - 100;
 		$("#grafiti").html('<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script><div id="chart_div" style="width: '+w+'px; height: 500px;"></div>');
-	
+
 }
 
 /**
@@ -646,6 +699,7 @@ function generirajPodatke() {
   	ustvariOsebo(i);
   	
   }
+	
 }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 function ustvariOsebo(stevilka) {
@@ -678,7 +732,13 @@ function ustvariOsebo(stevilka) {
 		            success: function (party) {
 		                if (party.action == 'CREATE') {
 		                    imena[stevilka] = ehrId;
+		                    
 							console.log("kreiran je bil pacient z EHR id = "+ehrId);
+							if (stevilka == 2) {
+								
+								podatkovnica();
+								
+							}
 		                }
 		            },
 		            error: function(err) {
@@ -693,6 +753,11 @@ function ustvariOsebo(stevilka) {
 }
 	///////////////////////////
 function podatkovnica() {
+	$("#izpisnik").html('<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiObstojeciEHR"><option value=""></option><option value="'+imena[0]+'">Uporabnik 1</option><option value="'+imena[1]+'">Uporabnik 2</option><option value="'+imena[2]+'">Uporabnik 3</option></select></div>');
+	$("#podatkovnik").html('<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiObstojeciVitalniZnak"><option value=""></option><option value="'+imena[0]+'|2016-06-02T15:36Z|1.78|75|45|2.5">Uporabnik 1</option><option value="'+imena[1]+'|2016-06-01T17:16Z|1.63|69|111|4">Uporabnik 2</option><option value="'+imena[2]+'|2016-06-02T08:15Z|1.81|89|20|2">Uporabnik 3</option></select></div>');
+	$("#grafik").html('<div class="col-lg-3 col-md-3 col-sm-3"><select class="form-control input-sm" id="preberiEhrIdZaVitalneZnake"><option value=""></option><option value="'+imena[0]+'">Uporabnik 1</option><option value="'+imena[1]+'">Uporabnik 2</option><option value="'+imena[2]+'">Uporabnik 3</option></select></div>');
+	aktivacija();
+	 
 for (var pac = 0; pac < 3; pac++) {
 	
 	for (var i = 0; i < 7; i ++) {
@@ -750,6 +815,7 @@ for (var pac = 0; pac < 3; pac++) {
 	}
 	
 }
+	
 }
 	////////////////////////////
 	//window.location.reload();
