@@ -44,15 +44,23 @@
   <!-- KONEC: Menujska vrstica na vrhu spletne strani -->
   
 </body>
-
-<body>
-  
+<style>
+body {
+    background: url(knjiznice/slike/ozadje.jpg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+</style>
+<div class="bckgrnd">
+<body background="knjiznice/slike/ozadje.jpg">
+</div> 
 		<div class="row">
 			<div class="col-lg-6 col-md-6 col-sm-6">
 				<div class="panel panel-default">
-					<div class="panel-heading">
+					<div class="panel-heading" style = "background-color:lightgreen">
 						<div class="row">
-							<div class="col-lg-8 col-md-8 col-sm-8"><b>Registracija</b> novega uporabnika</div>
+							<div class="col-lg-8 col-md-8 col-sm-8" ><b>Registracija</b> novega uporabnika</div>
 							<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiPredlogoBolnika"><option value=""></option><option value="Nik,Pečjak,1978-12-23T13:21">Nik Pečjak</option></select></div>
 						</div>
 					</div>
@@ -60,13 +68,13 @@
 						<span class="label label-default">Ime</span><input id="trenutnoIme" type="text" class="form-control input-mini" placeholder="Gaben">
 						<span class="label label-default">Priimek</span><input id="trenutniPriimek" type="text" class="form-control" placeholder="Newell">
 						<span class="label label-default">Datum rojstva</span><input id="datumRojstva" type="text" class="form-control" placeholder="1977-03-10T09:08">
-						<button type="button" class="btn btn-primary btn-xs" onclick="kreirajUporabnikID()">Registracija</button><span id="kreirajSporocilo"></span>
+						<button type="button" class="btn btn-primary btn-xs" style = "background-color:#333333" onclick="kreirajUporabnikID()">Registracija</button><span id="kreirajSporocilo"></span>
 				  	</div>
 				</div>
 			</div>
 			<div class="col-lg-6 col-md-6 col-sm-6">
 				<div class="panel panel-default">
-					<div class="panel-heading">
+					<div class="panel-heading" style = "background-color:lightgreen">
 						<div class="row">
 							<div class="col-lg-8 col-md-8 col-sm-8">Izpiši uporabnika</div>
 							<div id = "izpisnik"><div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiObstojeciEHR"><option value=""></option><option value="26bc67dd-88d4-4f2f-8a57-10328b3abfd3">Uporabnik 1</option><option value="a28c3421-d0fe-47ab-bd72-b52ad3f22316">Uporabnik 2</option><option value="49b8e430-bc67-404b-8a17-7551d4f86505">Uporabnik 3</option></select></div></div>
@@ -75,7 +83,7 @@
 					</div>
 					<div class="panel-body">
 						<span class="label label-default">EHR ID</span><input id="preberiUporabnika" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
-						<div id="easterEgg"><button type="button" class="btn btn-primary btn-xs" onclick="preglejUporabnika()">Preberi osnovne podatke o bolniku</button><span id="preberiSporocilo"></span></div>
+						<div id="easterEgg"><button type="button" class="btn btn-primary btn-xs" style = "background-color:#333333" onclick="preglejUporabnika()">Preberi osnovne podatke o bolniku</button><span id="preberiSporocilo"></span></div>
 				  	</div>
 				</div>
 			</div>
@@ -86,7 +94,7 @@
 		<div class="row">
 			<div class="col-lg-6 col-md-6 col-sm-6">
 				<div class="panel panel-default">
-					<div class="panel-heading">
+					<div class="panel-heading" style = "background-color:lightgreen">
 						<div class="row">
 							<div class="col-lg-8 col-md-8 col-sm-8"><b>Vnos</b> dnevne aktivnosti</div>
 							<div id = "podatkovnik"><div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiObstojeciVitalniZnak"><option value=""></option><option value="26bc67dd-88d4-4f2f-8a57-10328b3abfd3|2016-06-02T15:36Z|1.78|75|45|2.5">Uporabnik 1</option><option value="a28c3421-d0fe-47ab-bd72-b52ad3f22316|2016-06-01T17:16Z|1.63|69|111|4">Uporabnik 2</option><option value="49b8e430-bc67-404b-8a17-7551d4f86505|2016-06-02T08:15Z|1.81|89|20|2">Uporabnik 3</option></select></div></div>
@@ -99,7 +107,7 @@
 						<span class="label label-default">Telesna teža</span><div class="input-group"><input id="dodajTeza" type="text" class="form-control input-mini" placeholder="80.00"><span class="input-group-addon">kg</span></div>
 						<span class="label label-default">Trajanje telesne aktivnosti (minute)</span><div class="input-group"><input id="dodajMinAktivnosti" type="text" class="form-control input-mini" placeholder="60"><span class="input-group-addon">min</span></div>
 						<span class="label label-default">Količina zaužite vode</span><div class="input-group"><input id="dodajVoda" type="text" class="form-control input-mini" placeholder="2.3"><span class="input-group-addon">L</span></div>
-						<button type="button" class="btn btn-primary btn-xs" onclick="dodajMeritve()">Dodaj meritve vitalnih znakov</button><span id="dodajMeritveSporocilo"></span>
+						<button type="button" class="btn btn-primary btn-xs" style = "background-color:#333333" onclick="dodajMeritve()">Dodaj meritve vitalnih znakov</button><span id="dodajMeritveSporocilo"></span>
 				  	</div>
 				</div>
 			</div>
@@ -107,7 +115,7 @@
 		<!--__________________________________________________________________________________________________________________________________-->
 		<div class="col-lg-6 col-md-6 col-sm-6">
 				<div class="panel panel-default">
-					<div class="panel-heading">
+					<div class="panel-heading" style = "background-color:lightgreen">
 						<div class="row">
 							<div class="col-lg-6 col-md-6 col-sm-6"><b>Pregled</b> zadnjih 7 vnosov</div>
 							<div class="col-lg-3 col-md-3 col-sm-3"><select class="form-control input-sm" id="preberiTipZaIzpisPodatkov"><option value="Teza">Teža</option><option value="Aktivnost">Aktivnost</option><option value="ITM z dolzino aktivnosti in zauzito vodo">ITM z dolžino aktivnosti in zaužito vodo</option></select></div>
@@ -116,7 +124,7 @@
 					</div>
 					<div class="panel-body">
 						<span class="label label-default">EHR ID</span><input id="meritveVitalnihZnakovEHRid" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
-						<button type="button" class="btn btn-primary btn-xs" onclick="analizaPodatkov()">Izriši grafe</button><span id="preberiMeritveVitalnihZnakovSporocilo"></span>
+						<button type="button" class="btn btn-primary btn-xs"  style = "background-color:#333333"onclick="analizaPodatkov()">Izriši grafe</button><span id="preberiMeritveVitalnihZnakovSporocilo"></span>
 						<div id="meritveRezultati"></div>
 						<div id="grafiti"></div>
 				  	</div>
@@ -127,7 +135,7 @@
 		
 		<div class="col-lg-6 col-md-6 col-sm-6">
 				<div class="panel panel-default">
-					<div class="panel-heading">
+					<div class="panel-heading" style = "background-color:lightgreen">
 						<div class="row">
 							<div class="col-lg-6 col-md-6 col-sm-6" id="alarmantniUspeh"><b>Pomoč</b> s "spleta"</div>
 							
@@ -142,7 +150,7 @@
 					  &q=fitness" allowfullscreen>
 						</iframe>-->
 						<div id="zemljevid">
-						<button type="button" class="btn btn-primary btn-xs" onclick="duckyGo()">Pomagaj mi</button><span id="Pomagaj_mi"></span>
+						<button type="button" class="btn btn-primary btn-xs" style = "background-color:#333333" onclick="duckyGo()">Pomagaj mi</button><span id="Pomagaj_mi"></span>
 						<div id="brskanjePoNetu"></div>
 						</div>
 				  	</div>
