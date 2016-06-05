@@ -76,7 +76,7 @@ function kreirajUporabnikID() {
 	}
 	if (ime == "Gaben" && priimek == "Newell"){
 		
-		$("#easterEgg").html('<button type="button" class="btn btn-primary btn-xs" onclick="actionTurn()">Preberi osnovne podatke o bolniku</button><span id="preberiSporocilo"></span>');
+		$("#easterEgg").html('<button type="button" class="btn btn-primary btn-xs" style = "background-color:#333333" onclick="actionTurn()">Preberi osnovne podatke o bolniku</button><span id="preberiSporocilo"></span>');
 		console.log("Doom adventure has started.\nIf you want to continue type !start into field for checking person's info. If you want to go back to basic page enter !end")
 		
 	}

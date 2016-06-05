@@ -12,7 +12,7 @@ function actionTurn() {
     
     if (zaporedje[0] == "!end") {
         
-        $("#easterEgg").html('<button type="button" class="btn btn-primary btn-xs" onclick="preglejUporabnika()">Preberi osnovne podatke o bolniku</button><span id="preberiSporocilo"></span>');
+        $("#easterEgg").html('<button type="button" class="btn btn-primary btn-xs" style = "background-color:#333333" onclick="preglejUporabnika()">Preberi osnovne podatke o bolniku</button><span id="preberiSporocilo"></span>');
         console.log("Thank you for playing");
         
     }
